@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--引用-->
+
+<!--namespace务必和接口的全类名一致 （全类名=包名+类名）-->
+<mapper namespace="com.school.forum.mapper.QuestionMapper">
+
+    <insert id="insertQuestion" parameterType="com.school.forum.entity.Question"  keyProperty="id">
+        insert into question (title,description,gmt_create,gmt_modified,creator,comment_count,view_count,like_count,tag)
+        values (#{title},#{description},#{gmt_create},#{gmt_modified},#{creator},#{comment_count},#{view_count},#{like_count},#{tag})
+    </insert>
+
+</mapper>

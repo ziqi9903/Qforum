@@ -5,6 +5,7 @@
     <title>QiForum</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/css/community.css}" rel="stylesheet">
+
 </head>
 <body>
 
@@ -29,7 +30,7 @@
             <ul class="nav navbar-nav navbar-right">
 
                 <li th:if="${session.userSession!=null}">
-                    <a href="/publish" class="glyphicon glyphicon-plus">发布</a>
+                    <a href="#" class="glyphicon glyphicon-plus">发布</a>
                 </li>
 
                 <li class="dropdown" th:if="${session.userSession!=null}">
@@ -46,10 +47,65 @@
                 </li>
 
                 <li th:unless="${session.userSession!=null}">
-                  <a href="https://github.com/login/oauth/authorize?client_id=31eb497099b6bcf7081e&redirect_uri=http://localhost:8088/callback&scope=user&state=1">登录</a>
+                    <a href="https://github.com/login/oauth/authorize?client_id=31eb497099b6bcf7081e&redirect_uri=http://localhost:8088/callback&scope=user&state=1">登录</a>
                 </li>
 
             </ul>
+
+        </div>
+    </div>
+</nav>
+
+<nav>
+    <!--页面中间元素 采用栅格系统流式布局-->
+    <div class="container-fluid">
+        <div class="row main">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+
+                <h4><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h4>
+                <hr>
+
+                <form action="/publish" method="post">
+
+                    <div class="form-group">
+                        <label for="title">论坛话题</label>
+                        <input type="text" class="form-control" id="title" name="title"
+                               placeholder="话题..." th:value="${title}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">话题补充</label>
+                        <textarea  name="description" id="description" class="form-control"
+                                   cols="30" rows="15" th:text="${description}"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tag">选择分类</label>
+                        <input type="text" class="form-control" id="tag" name="tag"
+                               placeholder="话题分类 , 以 , 号分隔" th:value="${tag}">
+                    </div>
+
+                    <span class="alert alert-danger" th:text="${error}"
+                            th:if="${error != null}"></span>
+                    <button type="submit" class="btn btn-success btn-publish" >发布</button>
+
+                </form>
+
+            </div>
+
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+
+                <h4>知识点</h4>
+                - Spring Boot <hr>
+                - IDEA/Shotcut<hr>
+                - 快捷键<hr>
+                - Refactor<hr>
+                - 重构,封装<hr>
+                - Source Code<hr>
+                - 源码分析<hr>
+                - Git/Github<hr>
+
+            </div>
 
         </div>
     </div>

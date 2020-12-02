@@ -13,6 +13,34 @@ public class Question {
     private int like_count;
     private String tag;
 
+    public Question() {
+    }
+
+    public Question(int id, String title, String description, Long gmt_create, Long gmt_modified, int creator, int comment_count, int view_count, int like_count, String tag) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.gmt_create = gmt_create;
+        this.gmt_modified = gmt_modified;
+        this.creator = creator;
+        this.comment_count = comment_count;
+        this.view_count = view_count;
+        this.like_count = like_count;
+        this.tag = tag;
+    }
+
+    public Question(String title, String description, Long gmt_create, Long gmt_modified, int creator, int comment_count, int view_count, int like_count, String tag) {
+        this.title = title;
+        this.description = description;
+        this.gmt_create = gmt_create;
+        this.gmt_modified = gmt_modified;
+        this.creator = creator;
+        this.comment_count = comment_count;
+        this.view_count = view_count;
+        this.like_count = like_count;
+        this.tag = tag;
+    }
+
     @Override
     public String toString() {
         return "Question{" +

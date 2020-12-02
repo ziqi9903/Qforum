@@ -55,10 +55,9 @@ public class AuthorizeController {
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
 
-        if (githubUser != null) {
+        if (githubUser != null && githubUser.getId() != null) {
             User user = new User();
             String token = UUID.randomUUID().toString();
-            //请求头问题,已处理
             user.setName(githubUser.getName());
             user.setAccount_id(String.valueOf(githubUser.getId()));
             user.setToken(token);
