@@ -2,6 +2,8 @@ package com.school.forum.controller;
 
 import com.school.forum.dto.AccessTokenDTO;
 import com.school.forum.dto.GithubUser;
+import com.school.forum.entity.User;
+import com.school.forum.mapper.UserMapper;
 import com.school.forum.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 @Controller
 public class AuthorizeController {
@@ -34,20 +38,46 @@ public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletResponse response){
+                           HttpServletResponse response) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientId);
         accessTokenDTO.setClient_secret(clientSecret);
         accessTokenDTO.setCode(code);
         accessTokenDTO.setRedirect_uri(clientUri);
-        accessTokenDTO.setClient_secret(state);
+        accessTokenDTO.setState(state);
 
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
-        GithubUser user = githubProvider.getUser(accessToken);
-        System.out.println(user);
-        return "index";
+        GithubUser githubUser = githubProvider.getUser(accessToken);
+
+        if (githubUser != null) {
+            User user = new User();
+            String token = UUID.randomUUID().toString();
+            //请求头问题,已处理
+            user.setName(githubUser.getName());
+            user.setAccount_id(String.valueOf(githubUser.getId()));
+            user.setToken(token);
+            user.setGmt_create(System.currentTimeMillis());
+            user.setGmt_modified(user.getGmt_create());
+            user.setBio("zi");
+            user.setAvatar_url("qi");
+
+            userMapper.insertUser(user);
+
+            Cookie cookie = new Cookie("token", token);
+            cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
+            response.addCookie(cookie);
+            return "redirect:index";
+        } else {
+            /**
+             * 登录失败,重新登录
+             */
+            return "redirect:index";
+        }
     }
 }

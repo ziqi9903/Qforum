@@ -6,20 +6,19 @@ import com.school.forum.dto.GithubUser;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class GithubProvider {
 
     /**
      * 用来获取 github的token返回属性
-     * @param
-     * @return
      */
     public String getAccessToken(AccessTokenDTO accessTokenDTO) {
 
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
 
-        RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
+        RequestBody body = RequestBody.create(JSON.toJSONString(accessTokenDTO),mediaType);
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
                 .post(body)
@@ -36,8 +35,7 @@ public class GithubProvider {
 
     /**
      * 用来接收 user 的相关信息
-     * @param accessToken
-     * @return
+
      */
     public GithubUser getUser(String accessToken) {
         OkHttpClient client = new OkHttpClient();
@@ -48,7 +46,9 @@ public class GithubProvider {
         try {
             Response response = client.newCall(request).execute();
             String string = response.body().string();
+            System.out.println(string);
             GithubUser githubUser = JSON.parseObject(string, GithubUser.class);
+            System.out.println(githubUser);
             return githubUser;
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--引用-->
+
+<!--namespace务必和接口的全类名一致 （全类名=包名+类名）-->
+<mapper namespace="com.school.forum.mapper.UserMapper">
+
+
+
+    <insert id="insertUser" parameterType="com.school.forum.entity.User"  keyProperty="user_id">
+        insert into user (account_id,name,token,gmt_create,gmt_modified,bio,avatar_url)
+        values (#{account_id},#{name},#{token},#{gmt_create},#{gmt_modified},#{bio},#{avatar_url})
+    </insert>
+
+    <select id="findByToken" parameterType="String" resultType="com.school.forum.entity.User" >
+        select user_id,account_id,name,token,gmt_create,gmt_modified,bio,avatar_url
+        from user
+        where token = #{token}
+    </select>
+
+    <select id="selectUserName" parameterType="int" resultType="String">
+        select name
+        from user
+        where user_id= #{user_id}
+    </select>
+
+</mapper>
