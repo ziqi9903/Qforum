@@ -4,6 +4,7 @@ import com.school.forum.entity.Question;
 import com.school.forum.entity.User;
 import com.school.forum.mapper.QuestionMapper;
 import com.school.forum.mapper.UserMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,24 +41,21 @@ public class PublishController {
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
 
+        if (StringUtils.isBlank(title)) {
+            model.addAttribute("error", "标题不能为空");
+            return "login/publish";
+        }
+        if (StringUtils.isBlank(description)) {
+            model.addAttribute("error", "问题补充不能为空");
+            return "login/publish";
+        }
+        if (StringUtils.isBlank(tag)) {
+            model.addAttribute("error", "标签不能为空");
+            return "login/publish";
+        }
+
         User user = null;
         Cookie[] cookies = request.getCookies();
-        if(cookies == null){
-            model.addAttribute("error","用户未登录,请先登录");
-            return "login/publish";
-        }
-        if(title == null || title == ""){
-            model.addAttribute("error","标题不能为空");
-            return "login/publish";
-        }
-        if(description == null || description == ""){
-            model.addAttribute("error","话题内容不能为空");
-            return "login/publish";
-        }
-        if(tag == null || tag == ""){
-            model.addAttribute("error","标签不能为空");
-            return "login/publish";
-        }
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("token")) {
                 String token = cookie.getValue();
@@ -68,10 +66,10 @@ public class PublishController {
                 break;
             }
         }
-        if(user == null){
-            model.addAttribute("error","用户未登录,请先登录");
+        if(user == null) {
+            model.addAttribute("error", "用户未登录,请先登录");
             return "login/publish";
-        }else {
+        }
             Question question = new Question();
             question.setTitle(title);
             question.setDescription(description);
@@ -79,10 +77,9 @@ public class PublishController {
             question.setCreator(user.getUser_id());
             question.setGmt_create(System.currentTimeMillis());
             question.setGmt_modified(question.getGmt_create());
-
             questionMapper.insertQuestion(question);
             return "redirect:/index";
-        }
+
 
     }
 }

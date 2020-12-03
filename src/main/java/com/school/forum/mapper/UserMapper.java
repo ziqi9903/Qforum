@@ -14,4 +14,6 @@ public interface UserMapper {
     User findByToken(@Param(value = "token") String token);
 
     String selectUserName(int id);
+
+    User findByUserId(Integer creator);
 }

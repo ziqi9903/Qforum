@@ -10,3 +10,23 @@ body{
     margin-bottom: 15px;
     margin-right: 15px;
 }
+
+.img-self{
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+}
+
+.text-desc{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999999;
+}
+.self-div{
+    background-color: #efefef;
+    margin: 1px;
+}
+
+.media {
+    margin-top: 5px;
+}

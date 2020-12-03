@@ -33,5 +33,10 @@ public class UserMapperTest {
         System.out.println(userMapper.selectUserName(24));
     }
 
+    @Test
+    public void testFindByUserId(){
+        System.out.println(userMapper.findByUserId(48));
+    }
+
 
 }

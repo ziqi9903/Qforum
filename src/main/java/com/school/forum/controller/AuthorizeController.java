@@ -64,12 +64,11 @@ public class AuthorizeController {
             user.setGmt_create(System.currentTimeMillis());
             user.setGmt_modified(user.getGmt_create());
             user.setBio("zi");
-            user.setAvatar_url("qi");
+            user.setAvatar_url(githubUser.getAvatar_url());
 
             userMapper.insertUser(user);
 
             Cookie cookie = new Cookie("token", token);
-            cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
             response.addCookie(cookie);
             return "redirect:index";
         } else {
