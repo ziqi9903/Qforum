@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" http-equiv="Content-Type" content="text/html">
-    <title>QiForum</title>
+    <title th:text="${sectionName}"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/css/community.css}" rel="stylesheet">
 </head>
@@ -16,28 +16,30 @@
         <div class="row main">
             <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
 
-                <h4><span class="glyphicon glyphicon-list" aria-hidden="true"></span>发现</h4>
+                <h4><span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>
+                    <span th:text="${sectionName}"></span>
+                </h4>
                 <hr>
 
-                <div class="media" th:each="question:${question.questions}">
+                <div class="media" th:each="pagination:${pagination.questions}">
 
                     <div class="media self-div">
 
                         <div class="media-left">
-                            <a href="#">
+                            <a href="/index">
                                 <img class="media-object img-circle img-self"
-                                     th:src="${question.user.avatar_url}">
+                                     th:src="${pagination.user.avatar_url}">
                             </a>
                         </div>
 
                         <div class="media-body">
                             <h4 class="media-heading">
-                                <a th:text="${question.title}"></a>
+                                <a th:text="${pagination.title}"></a>
                             </h4>
-                            <span th:text="${question.description}"></span><br>
-                            <span class="text-desc"><span th:text="${question.comment_count}"></span> 个回复 • <span
-                                    th:text="${question.view_count}"></span> 次浏览 • <span
-                                    th:text="${#dates.format(question.gmt_create,'yyyy-MM-dd HH:mm')}"></span></span>
+                            <span th:text="${pagination.description}"></span><br>
+                            <span class="text-desc"><span th:text="${pagination.comment_count}"></span> 个回复 • <span
+                                    th:text="${pagination.view_count}"></span> 次浏览 • <span
+                                    th:text="${#dates.format(pagination.gmt_create,'yyyy-MM-dd HH:mm')}"></span></span>
                         </div>
                         </span>
                     </div>
@@ -45,40 +47,48 @@
 
                 <nav aria-label="Page navigation ">
                     <ul class="pagination page-right">
-                        <li th:if="${question.showFirstPage}">
-                            <a href="/index?page=1" aria-label="Previous">
+                        <li th:if="${pagination.showFirstPage}">
+                            <a href="/profile/question?page=1" aria-label="Previous">
                                 <span aria-hidden="true" class="glyphicon glyphicon-backward"></span>
                             </a>
                         </li>
-                        <li th:if="${question.showPrevious}">
-                            <a th:href="@{/index(page = ${question.currentPage - 1})}" aria-label="Previous">
+                        <li th:if="${pagination.showPrevious}">
+                            <a th:href="@{/profile/question(page = ${pagination.currentPage - 1})}" aria-label="Previous">
                                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                             </a>
                         </li>
-                        <li th:each="page : ${question.pages}" th:class="${question.currentPage == page}? 'active' : ''">
-                            <a th:href="@{/index(page = ${page})}" th:text="${page}"></a>
+                        <li th:each="page : ${pagination.pages}" th:class="${pagination.currentPage == page}? 'active' : ''">
+                            <a th:href="@{/profile/question(page = ${page})}" th:text="${page}"></a>
                         </li>
-                        <li th:if="${question.showNext}">
-                            <a th:href="@{/index(page = ${question.currentPage + 1})}"aria-label="Previous">
+                        <li th:if="${pagination.showNext}">
+                            <a th:href="@{/profile/question(page = ${pagination.currentPage + 1})}"aria-label="Previous">
                                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                             </a>
                         </li>
-                        <li th:if="${question.showEndPage}">
-                            <a th:href="@{/index(page = ${question.totalPage})}" aria-label="Previous">
+                        <li th:if="${pagination.showEndPage}">
+                            <a th:href="@{/profile/question(page = ${pagination.totalPage})}" aria-label="Previous">
                                 <span aria-hidden="true" class="glyphicon glyphicon-forward"></span>
                             </a>
                         </li>
                     </ul>
                 </nav>
-
             </div>
 
             <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-
-
+                <div class="list-group question-self">
+                    <a href="/profile/question" th:class="${section == 'question'}? 'list-group-item active' : 'list-group-item'">
+                        我的问题
+                        <span class="badge">12</span>
+                    </a>
+                    <a href="/profile/reples"  th:class="${section == 'reples'}? 'list-group-item active' : 'list-group-item'">
+                        我的回复
+                        <span class="badge">12</span>
+                    </a>
+                </div>
             </div>
 
         </div>
+
     </div>
 </nav>
 
