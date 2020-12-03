@@ -30,3 +30,8 @@ body{
 .media {
     margin-top: 5px;
 }
+
+.page-right{
+    float: right;
+    margin-right: 20px;
+}

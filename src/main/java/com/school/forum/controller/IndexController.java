@@ -1,6 +1,7 @@
 package com.school.forum.controller;
 
-import com.school.forum.dto.QuestionDTO;
+import com.school.forum.dto.PaginationDTO;
+;
 import com.school.forum.entity.User;
 import com.school.forum.mapper.UserMapper;
 import com.school.forum.service.QuestionService;
@@ -8,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 public class IndexController {
@@ -24,7 +25,9 @@ public class IndexController {
 
     @GetMapping("/index")
     public String index(HttpServletRequest request,
-                        Model model) {
+                        Model model,
+                        @RequestParam(name = "page",defaultValue = "1") Integer page,
+                        @RequestParam(name = "size",defaultValue = "7") Integer size) {
         Cookie[] cookies = request.getCookies();
         if(cookies != null && cookies.length != 0) {
             for (Cookie cookie : cookies) {
@@ -40,8 +43,8 @@ public class IndexController {
             }
         }
 
-        List<QuestionDTO> questionList = questionService.list();
-        model.addAttribute("question",questionList);
+        PaginationDTO question = questionService.list(page,size);
+        model.addAttribute("question",question);
             return "index";
     }
 
